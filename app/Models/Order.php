@@ -27,18 +27,6 @@ class Order extends Model
     }
 
 
-
-    public static function statusType()
-    {
-        return [
-            self::CREATED,
-            self::PAYED,
-            self::REJECTED,
-            self::DISPATCH,
-        ];
-    }
-
-
     public function scopeFiltered(Builder $builder)
     {
         if (session()->has('search[email]')) {
@@ -51,6 +39,33 @@ class Order extends Model
         return $builder->get();
 
     }
+
+
+    public function getStatusClassAttribute($value)
+    {
+        $class = "";
+        if ($this->status == self::CREATED) {
+            $class = "text-primary";
+        } elseif ($this->status == self::PAYED || $this->status == self::DISPATCH) {
+            $class = "text-success";
+        } elseif ($this->status == self::REJECTED) {
+            $class = "text-danger";
+        }
+
+        return $class;
+
+    }
+
+    public static function statusType()
+    {
+        return [
+            self::CREATED,
+            self::PAYED,
+            self::REJECTED,
+            self::DISPATCH,
+        ];
+    }
+
 
 
 }

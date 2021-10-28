@@ -32,6 +32,7 @@
                                 <th>Ciudad</th>
                                 <th>Dirección</th>
                                 <th>Estado</th>
+                                <th>Acciones</th>
                             </tr>
                             </thead>
                             <tbody>
@@ -44,6 +45,12 @@
                                     <td>{{ $order->customer->city }}</td>
                                     <td>{{ $order->customer->address }}</td>
                                     <td class="{{ $order->status_class }}">{{ $order->status }}</td>
+                                    <td>
+                                        @if($order->status == \App\Models\Order::PAYED)
+                                            <a data-route="{{ route('orders.dispatch',$order) }}" href="#"
+                                               class="btn btn-outline-primary btn-sm dispatch-order">Despachar</a>
+                                        @endif
+                                    </td>
                                 </tr>
                             @endforeach
                             </tbody>

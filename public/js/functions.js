@@ -18,13 +18,18 @@ jQuery(document).ready(function () {
 
                 setTimeout(function () {
                     window.location.reload();
-                },3000)
-
+                },2000)
 
             },
             error: function (error) {
-                alert(error)
-                window.location.reload();
+                Swal.fire({
+                    position: 'top',
+                    icon: 'error',
+                    title: 'No se pudo completar',
+                    showConfirmButton: false,
+                    timer: 1500
+                })
+                // window.location.reload();
             }
         })
     });

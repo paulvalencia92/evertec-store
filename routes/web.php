@@ -31,5 +31,6 @@ Route::get('/orders/{code}/reject', [OrderController::class, 'rejectOrder'])->na
  *    ORDENES ADMIN
  *================================**/
 Route::get('/orders', [OrderController::class, 'index'])->name('orders.index')->middleware('auth');
+Route::post('/orders/{order}/dispatch', [OrderController::class, 'dispatchOrder'])->name('orders.dispatch');
 
 Route::get('/home', 'HomeController@index')->name('home');

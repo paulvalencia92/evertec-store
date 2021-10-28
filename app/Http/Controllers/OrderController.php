@@ -3,11 +3,13 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\OrderRequest;
+use App\Mail\ProductDispatch;
 use App\Models\Customer;
 use App\Models\Order;
-use Dnetix\Redirection\PlacetoPay;
 use Illuminate\Http\Request;
+use Dnetix\Redirection\PlacetoPay;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Mail;
 
 class OrderController extends Controller
 {
@@ -131,4 +133,16 @@ class OrderController extends Controller
         return redirect()->route('orders.owner')
             ->with("message", ["danger", __("La orden ha sido rechaza")]);
     }
+
+    public function dispatchOrder(Request $request, Order $order)
+    {
+        $order->status = Order::DISPATCH;
+        $order->save();
+
+        Mail::to($order->customer->email)->send(new ProductDispatch($order->load('customer', 'product')));
+
+        return redirect()->route('orders.index')
+            ->with("message", ["success", __("El producto ha sido despachado")]);
+    }
+
 }
