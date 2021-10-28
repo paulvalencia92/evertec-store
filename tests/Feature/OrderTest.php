@@ -78,7 +78,6 @@ class OrderTest extends TestCase
 
     }
 
-
     /** @test */
     function order_status_created_to_reject()
     {
@@ -93,6 +92,5 @@ class OrderTest extends TestCase
             'code' => $order->code,
             'status' => Order::REJECTED
         ]);
-
     }
 }

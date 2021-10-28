@@ -11,6 +11,15 @@ use Illuminate\Support\Facades\DB;
 
 class OrderController extends Controller
 {
+
+
+    public function index()
+    {
+        $orders = Order::with('product', 'customer')->get();
+        return view('orders.index', compact('orders'));
+    }
+
+
     public function store(OrderRequest $request)
     {
         try {

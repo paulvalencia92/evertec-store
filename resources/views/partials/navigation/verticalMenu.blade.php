@@ -17,6 +17,15 @@
                 <div class="triangle"></div>
             </li>
 
+            @auth
+                <li class="nav-item">
+                    <a class="nav-item-hold" href="{{ route('orders.index') }}">
+                        <i class="nav-icon i-Checkout-Basket"></i>
+                        <span class="nav-text">Ordenes</span>
+                    </a>
+                    <div class="triangle"></div>
+                </li>
+            @endauth
         </ul>
     </div>
     <div class="sidebar-overlay"></div>
