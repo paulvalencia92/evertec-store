@@ -6,6 +6,8 @@ use Illuminate\Database\Eloquent\Model;
 
 class Order extends Model
 {
+    protected $guarded = [];
+
     const CREATED = 'CREATED';
     const PAYED = 'PAYED';
     const REJECTED = 'REJECTED';

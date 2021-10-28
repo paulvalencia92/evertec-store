@@ -47,6 +47,8 @@
         </div>
     @endauth
 
+    @include('products.form_order')
+
 @endsection
 
 
