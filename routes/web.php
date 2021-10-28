@@ -23,5 +23,7 @@ Route::post('/orders', [OrderController::class, 'store'])->name('orders.store');
 Route::get('/my-orders', [OrderController::class, 'getMyOrders'])->name('orders.owner');
 Route::post('/search-orders', [OrderController::class, 'search'])->name('orders.search');
 
+Route::post('/orders/{order}/pay', [OrderController::class, 'payOrder'])->name('orders.pay');
+
 
 Route::get('/home', 'HomeController@index')->name('home');

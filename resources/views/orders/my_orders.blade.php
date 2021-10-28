@@ -43,6 +43,14 @@
                             </b>
                         </p>
                         <p class="lead text-22 m-0">$ {{ $order->product->price }}</p>
+                        <div class="text-center mt-4">
+                            @if($order->status == \App\Models\Order::CREATED || $order->status == \App\Models\Order::REJECTED)
+                                <form method="POST" action="{{ route('orders.pay',$order->id) }}">
+                                    {{ csrf_field() }}
+                                    <button type="submit" class="btn btn-primary btn-block">Pagar</button>
+                                </form>
+                            @endif
+                        </div>
                     </div>
                 </div>
             </div>

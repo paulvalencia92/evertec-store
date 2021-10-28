@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Http\Requests\OrderRequest;
 use App\Models\Customer;
 use App\Models\Order;
+use Dnetix\Redirection\PlacetoPay;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 
@@ -59,5 +60,46 @@ class OrderController extends Controller
         }
 
         return redirect(route('orders.owner'));
+    }
+
+
+    public function payOrder(Request $request, Order $order)
+    {
+        $order->load('product');
+
+        $placetopay = new PlacetoPay([
+            'login' => env('PTPAY_LOGIN'),
+            'tranKey' => env('PTPAY_TRANKEY'),
+            'baseUrl' => 'https://dev.placetopay.com/redirection/',
+            'timeout' => 10000
+        ]);
+
+
+        $reference = $order->code;
+
+        $request = [
+            'payment' => [
+                'reference' => $reference,
+                'description' => "Pago producto - {$order->product->name}",
+                'amount' => [
+                    'currency' => 'USD',
+                    'total' => $order->product->price,
+                ],
+            ],
+            'expiration' => date('c', strtotime('+2 days')),
+            'returnUrl' => env('APP_URL') . "/orders/{$reference}/payed",
+            'cancelUrl' => env('APP_URL') . "/orders/{$reference}/reject",
+            'ipAddress' => '127.0.0.1',
+            'userAgent' => 'Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/52.0.2743.116 Safari/537.36',
+        ];
+
+        $response = $placetopay->request($request);
+
+        if ($response->isSuccessful()) {
+            $url = $response->processUrl();
+            return redirect()->away($url);
+        } else {
+            $response->status()->message();
+        }
     }
 }
