@@ -13,6 +13,9 @@ Route::get('/', function () {
  *    PRODUCTOS
  *================================**/
 Route::get('products', [ProductController::class, 'index'])->name('products.index');
+Route::post('products', [ProductController::class, 'store'])->name('products.store');
+Route::delete('products/{product}', [ProductController::class, 'destroy'])->name('products.destroy');
+Route::post('products/update', [ProductController::class, 'update'])->name('products.update');
 
 
 /**=================================

@@ -29,6 +29,22 @@
                                 type="button">
                             Generar orden
                         </button>
+
+                        @auth
+                            <button class="btn btn-outline-info btn-show-modal-edit"
+                                    data-product="{{$product}}"
+                                    type="button">
+                                Editar producto
+                            </button>
+
+
+                            <a class="btn btn-outline-danger delete-record"
+                                    data-route="{{ route("products.destroy", ["product" => $product]) }}"
+                                    href="#">
+                                Eliminar producto
+                            </a>
+
+                        @endauth
                     </div>
                 </div>
             </div>
@@ -47,7 +63,10 @@
         </div>
     @endauth
 
+
     @include('products.form_order')
+    @include('products.form_product_edit')
+    @include('products.form_product')
 
 @endsection
 
