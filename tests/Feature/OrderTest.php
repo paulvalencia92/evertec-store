@@ -3,6 +3,7 @@
 namespace Tests\Feature;
 
 use App\Models\Customer;
+use App\Models\Order;
 use App\Models\Product;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Foundation\Testing\WithFaker;
@@ -57,5 +58,23 @@ class OrderTest extends TestCase
             ->assertViewHas('orders', function ($orders) use ($order, $orderDifferent) {
                 return $orders->contains($order) && !$orders->contains($orderDifferent);
             });
+    }
+
+
+    /** @test */
+    function order_status_created_to_payed()
+    {
+        $product = factory(Product::class)->create();
+        $customer = factory(Customer::class)->create();
+        $order = $customer->orders()->create(['code' => uniqid(), 'product_id' => $product->id]);
+
+        $this->get("/orders/{$order->code}/payed")
+            ->assertRedirect(route('orders.owner'));
+
+        $this->assertDatabaseHas('orders', [
+            'code' => $order->code,
+            'status' => Order::PAYED
+        ]);
+
     }
 }

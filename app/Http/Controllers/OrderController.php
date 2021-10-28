@@ -102,4 +102,14 @@ class OrderController extends Controller
             $response->status()->message();
         }
     }
+
+
+    public function acceptOrder($code)
+    {
+        $order = Order::where('code', $code)->first();
+        $order->status = Order::PAYED;
+        $order->save();
+        return redirect()->route('orders.owner')
+            ->with("message", ["success", __("La orden ha sido generada correctamente, pronto llegara su pedido")]);
+    }
 }
