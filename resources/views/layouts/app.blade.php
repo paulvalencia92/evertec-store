@@ -1,80 +1,99 @@
-<!doctype html>
-<html lang="{{ str_replace('_', '-', app()->getLocale()) }}">
-<head>
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
+<!DOCTYPE html>
+<html lang="en" dir="">
 
+
+<head>
+    <meta charset="UTF-8"/>
+    <meta name="viewport" content="width=device-width,initial-scale=1"/>
+    <meta http-equiv="X-UA-Compatible" content="ie=edge"/>
     <!-- CSRF Token -->
     <meta name="csrf-token" content="{{ csrf_token() }}">
-
     <title>{{ config('app.name', 'Laravel') }}</title>
+    <link href="https://fonts.googleapis.com/css?family=Nunito:300,400,400i,600,700,800,900" rel="stylesheet"/>
+    <link href="/css/themes/lite-purple.min.css" rel="stylesheet"/>
+    <link href="/css/plugins/perfect-scrollbar.min.css" rel="stylesheet"/>
 
-    <!-- Scripts -->
-    <script src="{{ asset('js/app.js') }}" defer></script>
-
-    <!-- Fonts -->
-    <link rel="dns-prefetch" href="//fonts.gstatic.com">
-    <link href="https://fonts.googleapis.com/css?family=Nunito" rel="stylesheet">
-
-    <!-- Styles -->
-    <link href="{{ asset('css/app.css') }}" rel="stylesheet">
+    @stack('css')
 </head>
-<body>
-    <div id="app">
-        <nav class="navbar navbar-expand-md navbar-light bg-white shadow-sm">
-            <div class="container">
-                <a class="navbar-brand" href="{{ url('/') }}">
-                    {{ config('app.name', 'Laravel') }}
-                </a>
-                <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="{{ __('Toggle navigation') }}">
-                    <span class="navbar-toggler-icon"></span>
-                </button>
 
-                <div class="collapse navbar-collapse" id="navbarSupportedContent">
-                    <!-- Left Side Of Navbar -->
-                    <ul class="navbar-nav mr-auto">
+<body class="text-left">
+<div class="app-admin-wrap layout-sidebar-large">
+    @include('partials.navigation.horizontalMenu')
+    @include('partials.navigation.verticalMenu')
+</div>
 
-                    </ul>
+<!-- =============== Left side End ================-->
+<div class="main-content-wrap sidenav-open d-flex flex-column">
+    <!-- ============ Body content start ============= -->
+    <div class="main-content">
 
-                    <!-- Right Side Of Navbar -->
-                    <ul class="navbar-nav ml-auto">
-                        <!-- Authentication Links -->
-                        @guest
-                            <li class="nav-item">
-                                <a class="nav-link" href="{{ route('login') }}">{{ __('Login') }}</a>
-                            </li>
-                            @if (Route::has('register'))
-                                <li class="nav-item">
-                                    <a class="nav-link" href="{{ route('register') }}">{{ __('Register') }}</a>
-                                </li>
-                            @endif
-                        @else
-                            <li class="nav-item dropdown">
-                                <a id="navbarDropdown" class="nav-link dropdown-toggle" href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" v-pre>
-                                    {{ Auth::user()->name }}
-                                </a>
+        @yield('breadcrumb')
 
-                                <div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdown">
-                                    <a class="dropdown-item" href="{{ route('logout') }}"
-                                       onclick="event.preventDefault();
-                                                     document.getElementById('logout-form').submit();">
-                                        {{ __('Logout') }}
-                                    </a>
+        <div class="separator-breadcrumb border-top"></div>
+        <div class="row">
+            <div class="col-md-12">
+                @component('components.alert-component')@endcomponent
+            </div>
+            <div class="col-md-12">
+                @yield('content')
+            </div>
+        </div>
+    </div><!-- Footer Start -->
 
-                                    <form id="logout-form" action="{{ route('logout') }}" method="POST" class="d-none">
-                                        @csrf
-                                    </form>
-                                </div>
-                            </li>
-                        @endguest
-                    </ul>
+    <div class="flex-grow-1"></div>
+    <div class="app-footer">
+        <div class="row">
+            <div class="col-md-9">
+                <p><strong>www.evertecinc.com</strong></p>
+                <p>Somos una compañía líder de tecnología y transacciones electrónicas, con sede en San Juan, Puerto
+                    Rico. Contamos con presencia en 26 países de América Latina y el Caribe, con servicios en tres
+                    segmentos principales: adquisición de comerciantes, procesamiento de pagos y soluciones de negocio.
+                    Somos dueños y operadores de la red de débito más grande del Caribe.
+                    <sunt></sunt>
+                </p>
+            </div>
+        </div>
+        <div class="footer-bottom border-top pt-3 d-flex flex-column flex-sm-row align-items-center">
+            <a class="btn btn-primary text-white btn-rounded" href="https://www.evertecinc.com/"
+               target="_blank">Evertec</a>
+            <span class="flex-grow-1"></span>
+            <div class="d-flex align-items-center">
+                <img class="logo" src="/images/logo.png" alt="">
+                <div>
+                    <p class="m-0">&copy; 2018 Gull HTML</p>
+                    <p class="m-0">All rights reserved</p>
                 </div>
             </div>
-        </nav>
-
-        <main class="py-4">
-            @yield('content')
-        </main>
+        </div>
     </div>
+    <!-- fotter end -->
+</div>
+</div><!-- ============ Search UI Start ============= -->
+
+<!-- ============ Search UI End ============= -->
+<script src="/js/plugins/jquery-3.3.1.min.js"></script>
+<script src="/js/plugins/bootstrap.bundle.min.js"></script>
+<script src="/js/plugins/perfect-scrollbar.min.js"></script>
+<script src="/js/scripts/script.min.js"></script>
+<script src="/js/scripts/sidebar.large.script.min.js"></script>
+<script src="/js/jConfirm.js"></script>
+<script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+<script>
+    jQuery(document).ready(function () {
+        $.jConfirm.defaults.question = '{{ __("¿Estás seguro?") }}';
+        $.jConfirm.defaults.confirm_text = '{{ __("Sí") }}';
+        $.jConfirm.defaults.deny_text = '{{ __("No") }}';
+        $.jConfirm.defaults.position = 'top';
+        $.jConfirm.defaults.theme = 'black';
+        $.ajaxSetup({
+            headers: {
+                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+            }
+        });
+    });
+</script>
+<script src="/js/functions.js"></script>
+@stack('js')
 </body>
+
 </html>
