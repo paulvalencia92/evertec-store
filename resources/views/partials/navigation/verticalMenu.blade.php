@@ -8,6 +8,15 @@
                 </a>
                 <div class="triangle"></div>
             </li>
+
+            <li class="nav-item">
+                <a class="nav-item-hold" href="{{ route('orders.owner') }}">
+                    <i class="nav-icon i-Checkout-Basket"></i>
+                    <span class="nav-text">Mis Ordenes</span>
+                </a>
+                <div class="triangle"></div>
+            </li>
+
         </ul>
     </div>
     <div class="sidebar-overlay"></div>

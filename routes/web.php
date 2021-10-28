@@ -20,5 +20,8 @@ Route::get('products', [ProductController::class, 'index'])->name('products.inde
  *================================**/
 Route::post('/orders', [OrderController::class, 'store'])->name('orders.store');
 
+Route::get('/my-orders', [OrderController::class, 'getMyOrders'])->name('orders.owner');
+Route::post('/search-orders', [OrderController::class, 'search'])->name('orders.search');
+
 
 Route::get('/home', 'HomeController@index')->name('home');

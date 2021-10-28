@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\OrderRequest;
 use App\Models\Customer;
+use App\Models\Order;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 
@@ -38,5 +39,25 @@ class OrderController extends Controller
             DB::rollBack();
             return back()->with('message', ['danger', $exception->getMessage()]);
         }
+    }
+
+
+
+    public function getMyOrders()
+    {
+        $orders = Order::filtered();
+        return view('orders.my_orders', compact('orders'));
+    }
+
+
+    public function search()
+    {
+        session()->remove('search[email]');
+        if (request('search')) {
+            session()->put('search[email]', request('search'));
+            session()->save();
+        }
+
+        return redirect(route('orders.owner'));
     }
 }

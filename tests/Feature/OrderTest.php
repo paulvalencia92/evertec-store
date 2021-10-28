@@ -2,6 +2,7 @@
 
 namespace Tests\Feature;
 
+use App\Models\Customer;
 use App\Models\Product;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Foundation\Testing\WithFaker;
@@ -9,6 +10,9 @@ use Tests\TestCase;
 
 class OrderTest extends TestCase
 {
+
+    use RefreshDatabase;
+
     /** @test */
     function guest_user_can_generate_order()
     {
@@ -31,5 +35,27 @@ class OrderTest extends TestCase
         $this->assertDatabaseHas('orders', [
             'product_id' => $product->id
         ]);
+    }
+
+
+
+    /** @test */
+    function guest_user_can_see_their_orders()
+    {
+        $product = Product::create(['name' => 'Portatil Asus', 'price' => 800,'file' => 'product_default.jpg']);
+
+        $customer = factory(Customer::class)->create(['email' => 'apvalencia92@gmail.com']);
+        $otherCustomer = factory(Customer::class)->create();
+
+        $order = $customer->orders()->create(['code' => uniqid(), 'product_id' => $product->id]);
+        $orderDifferent = $otherCustomer->orders()->create(['code' => uniqid(), 'product_id' => $product->id]);
+
+        $this->post('/search-orders', ['search' => 'apvalencia92@gmail.com'])
+            ->assertRedirect(route('orders.owner'));
+
+        $this->get('/my-orders')
+            ->assertViewHas('orders', function ($orders) use ($order, $orderDifferent) {
+                return $orders->contains($order) && !$orders->contains($orderDifferent);
+            });
     }
 }
