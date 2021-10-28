@@ -77,4 +77,22 @@ class OrderTest extends TestCase
         ]);
 
     }
+
+
+    /** @test */
+    function order_status_created_to_reject()
+    {
+        $product = factory(Product::class)->create();
+        $customer = factory(Customer::class)->create();
+        $order = $customer->orders()->create(['code' => uniqid(), 'product_id' => $product->id]);
+
+        $this->get("/orders/{$order->code}/reject")
+            ->assertRedirect(route('orders.owner'));
+
+        $this->assertDatabaseHas('orders', [
+            'code' => $order->code,
+            'status' => Order::REJECTED
+        ]);
+
+    }
 }

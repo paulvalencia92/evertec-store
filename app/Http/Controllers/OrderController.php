@@ -112,4 +112,14 @@ class OrderController extends Controller
         return redirect()->route('orders.owner')
             ->with("message", ["success", __("La orden ha sido generada correctamente, pronto llegara su pedido")]);
     }
+
+
+    public function rejectOrder($code)
+    {
+        $order = Order::where('code', $code)->first();
+        $order->status = Order::REJECTED;
+        $order->save();
+        return redirect()->route('orders.owner')
+            ->with("message", ["danger", __("La orden ha sido rechaza")]);
+    }
 }
